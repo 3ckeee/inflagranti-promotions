@@ -1,0 +1,22 @@
+msgid "InFlagranti Promotions"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Subscribe"
+msgstr ""
+
+msgid "Thank you for subscribing!"
+msgstr ""
+
+msgid "This email is already subscribed."
+msgstr ""
+
+/* ...and so on for each __('…','inflagranti-promotions') string */ 

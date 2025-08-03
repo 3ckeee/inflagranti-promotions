@@ -1,0 +1,7 @@
+{
+    "name": "ifl/inflagranti-promotions",
+    "description": "InFlagranti Promotions plugin",
+    "require": {
+        "pkpass/pkpass": "^2.4"
+    }
+}
