@@ -80,6 +80,45 @@ register_activation_hook( __FILE__, function() {
     flush_rewrite_rules();
 } );
 
+// Add these lines to enable iOS app integration
+  add_action('wp_ajax_ifl_check_subscriber', 'ifl_handle_check_subscriber');
+  add_action('wp_ajax_nopriv_ifl_check_subscriber', 'ifl_handle_check_subscriber');
+
+function ifl_handle_check_subscriber() {
+      global $wpdb;
+
+      $email = sanitize_email($_POST['email']);
+
+      if (empty($email)) {
+          wp_send_json(array('success' => false, 'message' => 'Email required'));
+          return;
+      }
+
+      $table_name = $wpdb->prefix . 'ifl_subscribers';
+      $subscriber = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE email = %s", $email));
+
+      if ($subscriber) {
+          wp_send_json(array(
+              'success' => true,
+              'subscriber' => array(
+                  'id' => intval($subscriber->id),
+                  'email' => $subscriber->email,
+                  'name' => $subscriber->name,
+                  'phone' => $subscriber->phone,
+                  'discount_percentage' => intval($subscriber->discount_pct), // ← FIXED THIS
+                  'pass_serial' => $subscriber->pass_serial,
+                  'pass_downloaded' => (bool)$subscriber->pass_downloaded,
+                  'created_at' => $subscriber->created_at
+              )
+          ));
+      } else {
+          wp_send_json(array('success' => false, 'message' => 'Subscriber not found'));
+      }
+  }
+
+
+
+
 // Deactivation: flush rewrite rules
 register_deactivation_hook( __FILE__, function() {
     flush_rewrite_rules();
